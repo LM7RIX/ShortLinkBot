@@ -1,5 +1,5 @@
 <?php
-include('config.php')
+include('config.php');
 $db = new mysqli($server, $username, $password, $databasename);
 if($db == true){
   $db->query("CREATE TABLE member (id INT(10))");
