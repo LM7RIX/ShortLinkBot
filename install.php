@@ -1,11 +1,8 @@
 <?php
-$server = "localhost";
-$username = "username";
-$password = "password";
-$databasename = "name database";
+include('config.php')
 $db = new mysqli($server, $username, $password, $databasename);
 if($db == true){
-  $db->query("CREATE TABLE member (id INT(100))");
+  $db->query("CREATE TABLE member (id INT(10))");
   echo 'ok';
 }?>
 <html>
