@@ -58,7 +58,7 @@ if($message['text']){
     while($rw = $sendreq->fetch_assoc()){
       bot('sendMessage',[
         'chat_id'=>$rw['id'],
-        'text'=>$match[1],
+        'text'=>$match[2],
         'parse_mode'=>'HTML'
       ]);
     }
