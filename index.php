@@ -53,11 +53,11 @@ if($message['text']){
     ));
   }
   if(preg_match('/^\/([Bb]c) (.*)/',$text) and $from == $admin){
-    $textbc = preg_match('/^\/([Bb]c) (.*)/',$text,$match);
-    $members = $db->query('SELECT id FROM member');
-    while($c = $member->fetch_assoc()){
+    preg_match('/^\/([Bb]c) (.*)/',$text,$match);
+    $sendreq = $db->query('SELECT id FROM member');
+    while($rw = $sendreq->fetch_assoc()){
       bot('sendMessage',[
-        'chat_id'=>$c['id'],
+        'chat_id'=>$rw['id'],
         'text'=>$match[1],
         'parse_mode'=>'HTML'
       ]);
