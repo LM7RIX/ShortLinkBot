@@ -7,6 +7,7 @@ Creator : @Negative | @Taylor_Team
 هرگونه کپی برداری بدون ذکر منبع پیگرد قانونی دارد
 */
 define('API_KEY', 'توکن شما');
+$admin = 'ID';
 function bot($method,$datas=[]){
     $url = "https://api.telegram.org/bot".API_KEY."/".$method;
     $ch = curl_init();
@@ -20,13 +21,15 @@ function bot($method,$datas=[]){
         return json_decode($res);
     }
 }
-
+include('config.php');
+$db = new mysqli($server, $username, $password, $databasename);
 $content = file_get_contents("php://input");
 $update = json_decode($content, true);
 $message = $update['message'];
 if($message['text']){
   $chat_id = $update['message']['chat']['id'];
   $text = $update['message']['text'];
+  $from = $update['message']['from']['id'];
   if(preg_match('/^([Hh]ttp|[Hh]ttps)(.*)/',$text)){
     bot('sendMessage',array('chat_id'=>$chat_id,'text'=>'Please Wait 😉'));
     bot('sendChatAction',array('chat_id'=>$chat_id,'action'=>'typing'));
@@ -39,11 +42,26 @@ if($message['text']){
     ]);
   }
   if(preg_match('/^\/([sS]tart)|([Hh]elp)/',$text)){
+    $check = $db->query('SELECT id FROM memebr WHERE id='.$chat_id);
+    if ($check->num_rows == 0){
+      $db->query('INSERT INTO member (id) VALUES ('.$chat_id.')');
+    }
     bot('sendMessage',array(
       'chat_id'=>$chat_id,
       'text'=>"Hello Welcome To <b>Shorten URL bot</b>\nCreator : @Negative\n\nSend a URL",
       'parse_mode'=>'HTML'
     ));
+  }
+  if(preg_match('/^\/([Bb]c) (.*)/',$text) and $from == $admin){
+    $textbc = preg_match('/^\/([Bb]c) (.*)/',$text,$match);
+    $members = $db->query('SELECT id FROM member');
+    while($c = $member->fetch_assoc()){
+      bot('sendMessage',[
+        'chat_id'=>$c['id'],
+        'text'=>$match[1],
+        'parse_mode'=>'HTML'
+      ]);
+    }
   }
 }
 /*if($update['inline_query']){
