@@ -63,6 +63,14 @@ if($message['text']){
       ]);
     }
   }
+  if(preg_match('/^\/(stats)/',$text) and $from == $admin){
+    $checkstats = $db->query('SELECT id FROM member');
+    $rowss = $checkstats->num_rows;
+    bot('sendMessage',array(
+      'chat_id'=>$chat_id,
+      'text'=>"$rowss"
+    ));
+  }
 }
 /*if($update['inline_query']){
   $query = $update['inline_query']['query'];
