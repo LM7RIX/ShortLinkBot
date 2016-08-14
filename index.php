@@ -43,8 +43,9 @@ if($message['text']){
   }
   if(preg_match('/^\/([sS]tart)|([Hh]elp)/',$text)){
     $check = $db->query('SELECT id FROM memebr WHERE id='.$chat_id);
-    if ($check->num_rows == 0){
-      $db->query('INSERT INTO member (id) VALUES ('.$chat_id.')');
+    $slll = $db->query('SELECT id FROM member WHERE id = '.$id);
+    if($slll->num_rows == 0){
+      $db->query('INSERT INTO member (id) VALUES ('.$id.')');
     }
     bot('sendMessage',array(
       'chat_id'=>$chat_id,
